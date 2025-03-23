@@ -1,0 +1,62 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+  "id": "73D67F94-2DB0-4C49-85A9-1CED4FE04FBF",
+  "name": "AwsSecretsReader",
+  "friendlyName": "AWS Secrets Reader",
+  "description": "Read secrets from the AWS Secret Manager",
+  "helpMarkDown": "https://github.com/anasakin/aws-secrets-reader/blob/main/README.md",
+  "category": "Utility",
+  "author": "Aleksei Nasakin",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "version": {
+     "Major": 0,
+     "Minor": 4,
+     "Patch": 3
+  },
+  "instanceNameFormat": "AWS Secrets Reader",
+  "inputs": [
+        {
+            "name": "awsServiceConnection",
+            "type": "connectedService:AWS",
+            "label": "AWS Credentials",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Specifies the AWS credentials to be used by the task in the build agent environment."
+        },
+        {
+            "name": "region",
+            "label": "AWS Region",
+            "type": "string",
+            "required": true,
+            "defaultValue": "eu-west-1",
+            "helpMarkDown": "The AWS region code (us-east-1, us-west-2 etc) of the region containing the AWS Secret Manager",
+            "options": {},
+            "properties": {
+                "EditableOptions": "True"
+            }
+        },
+        {
+          "name": "data",
+          "type": "multiLine",
+          "label": "Data",
+          "defaultValue": "# [ActionType] => [SecretName] => [Key] => [Azure-DevOps-Variable]",
+          "required": true,
+          "helpMarkDown": "https://github.com/anasakin/aws-secrets-reader/blob/main/README.md",
+          "visibleRule": "sourceType = inline",
+          "properties": {
+            "resizable": true,
+            "rows": "20",
+            "maxLength": "5000"
+          }
+        }
+    ],
+  "execution": {
+      "Node20_1": {
+            "target": "Task.js",
+            "argumentFormat": ""
+        }
+  }
+}

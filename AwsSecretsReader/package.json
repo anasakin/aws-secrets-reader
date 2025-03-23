@@ -1,0 +1,23 @@
+{
+  "name": "aws-secrets-reader",
+  "version": "0.4.3",
+  "keywords": [
+    "extensions",
+    "Azure DevOps",
+    "AWS",
+    "Secrets Manager"
+  ],
+  "author": "Aleksei Nasakin",
+  "license": "MIT",
+  "description": "Retrieve secrets from the AWS Secrets Manager",
+  "dependencies": {
+    "aws-sdk": "^2.1494.0",
+    "azure-pipelines-task-lib": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "@types/node": "^20.11.27",
+    "eslint": "^8.55.0",
+    "typescript": "^4.9.4"
+  }
+}
