@@ -14,7 +14,7 @@
   "version": {
      "Major": 0,
      "Minor": 4,
-     "Patch": 3
+     "Patch": 5
   },
   "instanceNameFormat": "AWS Secrets Reader",
   "inputs": [
@@ -45,7 +45,6 @@
           "defaultValue": "# [ActionType] => [SecretName] => [Key] => [Azure-DevOps-Variable]",
           "required": true,
           "helpMarkDown": "https://github.com/anasakin/aws-secrets-reader/blob/main/README.md",
-          "visibleRule": "sourceType = inline",
           "properties": {
             "resizable": true,
             "rows": "20",
