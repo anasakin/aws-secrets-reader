@@ -13,8 +13,8 @@
   ],
   "version": {
      "Major": 0,
-     "Minor": 4,
-     "Patch": 6
+     "Minor": 5,
+     "Patch": 0
   },
   "instanceNameFormat": "AWS Secrets Reader",
   "inputs": [

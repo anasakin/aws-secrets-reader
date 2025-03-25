@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import * as tl from 'azure-pipelines-task-lib/task';
 
 async function run() {
@@ -7,56 +7,52 @@ async function run() {
     const data: string = tl.getInput('data', true)!;
     const region: string = tl.getInput('region', true)!;
 
-    // Configure AWS SDK using Service Connection
     const accessKeyId: string = tl.getEndpointAuthorizationParameter(awsServiceConnection, 'username', false)!;
     const secretAccessKey: string = tl.getEndpointAuthorizationParameter(awsServiceConnection, 'password', false)!;
 
-    AWS.config.update({
+    const client = new SecretsManagerClient({
       region,
-      credentials: new AWS.Credentials(accessKeyId, secretAccessKey)
+      credentials: {
+        accessKeyId,
+        secretAccessKey,
+      },
     });
-
-    const secretsManager = new AWS.SecretsManager();
 
     const lines: string[] = data.split('\n').map((line: string) => line.trim()).filter((line: string) => line);
 
     for (const line of lines) {
       const [mode, secretName, keys, outputPrefix] = line.split(' => ').map((part: string) => part.trim());
 
-      const secretData = await secretsManager.getSecretValue({ SecretId: secretName }).promise();
-      const secretObject = JSON.parse(secretData.SecretString?.toString() || '{}');
+      const command = new GetSecretValueCommand({ SecretId: secretName });
+      const secretData = await client.send(command);
+      const secretObject = JSON.parse(secretData.SecretString || '{}');
 
       if (mode === 'var') {
-        // Wildcard (*) means setting variable for each key in the secret
         if (keys === '*') {
           Object.keys(secretObject).forEach((key: string) => {
-            const variableName: string = key; // Variable name = key in the secret
-            console.log(`Setting variable: ${variableName}`);
-            tl.setVariable(variableName, secretObject[key]);
+            console.log(`Setting variable: ${key}`);
+            tl.setVariable(key, secretObject[key]);
           });
         } else {
-          const key: string = keys;
-          if (secretObject[key]) {
-            const variableName: string = outputPrefix;
-            console.log(`Setting variable: ${variableName}`);
-            tl.setVariable(variableName, secretObject[key]);
+          if (secretObject[keys]) {
+            console.log(`Setting variable: ${outputPrefix}`);
+            tl.setVariable(outputPrefix, secretObject[keys]);
           } else {
-            throw new Error(`Key ${key} not found in secret ${secretName}`);
+            throw new Error(`Key ${keys} not found in secret ${secretName}`);
           }
         }
       } else if (mode === 'pre') {
-        // Wildcard (*) means adding prefix to each key and setting variable as prefix_key
         if (keys === '*') {
           Object.keys(secretObject).forEach((key: string) => {
-            const variableName: string = `${outputPrefix}_${key}`;
+            const variableName = `${outputPrefix}_${key}`;
             console.log(`Setting variable: ${variableName}`);
             tl.setVariable(variableName, secretObject[key]);
           });
         } else {
-          const requestedKeys: string[] = keys.split(',').map((k: string) => k.trim());
+          const requestedKeys = keys.split(',').map((k: string) => k.trim());
           requestedKeys.forEach((key: string) => {
             if (secretObject[key]) {
-              const variableName: string = `${outputPrefix}_${key}`;
+              const variableName = `${outputPrefix}_${key}`;
               console.log(`Setting variable: ${variableName}`);
               tl.setVariable(variableName, secretObject[key]);
             } else {

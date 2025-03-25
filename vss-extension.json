@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "aws-secrets-reader",
   "name": "AWS Secrets Reader",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "publisher": "Nasakin",
   "targets": [
       {
