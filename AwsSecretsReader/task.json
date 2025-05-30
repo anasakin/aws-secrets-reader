@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-  "id": "73D67F94-2DB0-4C49-85A9-1CED4FE04FBF",
+  "id": "73D67F94-2DB0-4C49-85A9-1CED4FE04FBD",
   "name": "AwsSecretsReader",
-  "friendlyName": "AWS Secrets Reader",
+  "friendlyName": "AWS Secrets Reader Test",
   "description": "Read secrets from the AWS Secret Manager",
   "helpMarkDown": "https://github.com/anasakin/aws-secrets-reader/blob/main/README.md",
   "category": "Utility",

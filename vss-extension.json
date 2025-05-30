@@ -1,6 +1,6 @@
 {
   "manifestVersion": 1,
-  "id": "aws-secrets-reader",
+  "id": "aws-secrets-reader-test",
   "name": "AWS Secrets Reader",
   "version": "0.4.6",
   "publisher": "Nasakin",
